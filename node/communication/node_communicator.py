@@ -9,9 +9,10 @@ class Node_Comunicator():
     def __init__(self):
         self._station_ip_address = '192.168.0.199'  # ip address of main station
         self._buffer_size = 256
-        self._msg_delimiter = '/'
+        self._msg_delimiter = '/' 
         self._msg_end = 'z'
         self._msg_tail = self._msg_delimiter + self._msg_end + self._msg_delimiter
+        
 
         # Variables
         self._ps = np.zeros((3, 1)) # x-y-phi
