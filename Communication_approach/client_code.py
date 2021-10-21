@@ -1,29 +1,52 @@
 import socket
 import numpy as np
+from ping3 import ping
 
-def initialize_server(addrs, num_agents):
+def detect_agents(addrs = None):
+    if addrs == None:
+        host = "192.168.0."
+        addrs = []
+        for i in range(100, 105):
+            hostname = host + str(i)  # example
+            response = ping(hostname)
+            if type(response) == float:
+                addrs.append(hostname)
+                print(hostname)
+    return addrs
+
+def initialize_server(addrs):
     port = 8080 #convention
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
+
     welcome_message = "welcome"
     count = 0
+    num_agents = len(addrs)
     agents = {}
     finding_agents = True
+
     while finding_agents:
-        for each_addres in addrs:
-            server.connect((each_addres, port))  # Connect to the agent
+        for each_address in addrs:
+            server.connect((each_address, port))  # Connect to the agent
             server.send(bytes(welcome_message.encode("utf-8")))  # Send welcome message
             answer = server.recv(4096).decode("utf-8")
+            print(answer)
             if answer == "Firts connection successful":
-                count += 1
-                agents[addrs] = {"Id": count} #Save agent info in a dict
+                agents[addrs] = {"Id": answer} #Save agent info in a dict
         if len(agents) == num_agents:
             finding_agents = False
     return agents
 
 def main():
-    num_agents = 3  # Number of agents in the system
-    ip_dir = ["domain 1", "domain 2", "domain 3"]  # Raspberry pie domains for TCP/IP connection
-
+    addrs = None
+    print("Looking for agents...")
+    ip_dir = detect_agents(addrs)
+    print("Agents detected: \n", ip_dir)
+    Ids = initialize_server(ip_dir)
+    print("Dictionary with Ids: \n", Ids)
+    
     # Initialize systems
     Ax1 = np.array([[1, 2, 3], [1, 2, 3], [1, 2, 3]])
     Ax2 = np.array([[1, 2, 3], [1, 2, 3], [1, 2, 3]])
