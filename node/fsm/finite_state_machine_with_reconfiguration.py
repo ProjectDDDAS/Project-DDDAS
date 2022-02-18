@@ -42,6 +42,7 @@ def run_navigation_controller(communicator):
             print(p2Attacked)
         target_pos[0, 0] = target_pos_array[0]
         target_pos[1, 0] = target_pos_array[1]
+        print(target_pos)
         pose_estimation = reconfigurator.compute_convex_combination(p1Attacked.copy(), p2Attacked.copy(), target_pos)
 
         wheel_speeds = controller.compute_control_actions(pose_estimation, target_pos)
