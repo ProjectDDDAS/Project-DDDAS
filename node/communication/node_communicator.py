@@ -84,11 +84,14 @@ class Node_Comunicator():
         msg = self._camera_sckt.recv(self._buffer_size).decode('utf-8').split(self._msg_delimiter)
         complete_message = self.check_message(msg)
         robot_ip_address = '0'
+        print(complete_message)
         if(complete_message):
             if(msg[0] == 'exit'):
+                print('saliendo')
                 stop_flag = True
             else:
                 robot_ip_address = msg[0]
+                print(robot_ip_address)
                 stop_flag = False
         else:
             stop_flag = True
