@@ -60,7 +60,7 @@ def run_state(communicator):
 
         if(not stop_flag):
             neighbors_info = np.array(list(map(float, msg[:-2]))).reshape(4, -1)
-            new_population_portions = DT_DPDs(population_portions, fitnesses, neighbors_info)
+            new_population_portions = DT_DRDs(population_portions, fitnesses, neighbors_info)
             target_pos_array[0] = new_population_portions[0]
             target_pos_array[1] = new_population_portions[1]
 
